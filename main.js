@@ -19,21 +19,3 @@ udpPort.on("error", function (error) {
 
 // Open the socket.
 udpPort.open();
-
-
-// When the port is read, send an OSC message to, say, SuperCollider
-udpPort.on("ready", function () {
-    udpPort.send({
-        address: "/s_new",
-        args: [
-            {
-                type: "s",
-                value: "default"
-            },
-            {
-                type: "i",
-                value: 100
-            }
-        ]
-    }, "127.0.0.1", 57110);
-});
