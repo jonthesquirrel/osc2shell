@@ -7,8 +7,8 @@
       "trigger_type": "continuous"
     },
     "/pulse": {
-      "command_rising": "say rising",
-      "command_falling": "say falling",
+      "command_rising": "effect give @a minecraft:night_vision 9999 1 true",
+      "command_falling": "effect clear @a minecraft:night_vision",
       "trigger_type": "threshold",
       "threshold": 0.35
     }
