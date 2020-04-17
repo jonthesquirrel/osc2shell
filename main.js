@@ -16,6 +16,7 @@ var udpPort = new osc.UDPPort({
     metadata: true
 });
 
+// Run shell commands
 function runShell (command) {
   const { exec } = require("child_process");
   exec(command, (error, stdout, stderr) => {
@@ -31,13 +32,17 @@ function runShell (command) {
 });
 }
 
-// Listen for incoming OSC messages.
+// Listen for incoming OSC messages and execute commands based on config
 udpPort.on("message", function (message, timeTag, info) {
     if (message.address in config.osc_messages) {
-      let instructions = config.osc_messages[message.address]
-      instructions = instructions.replace("$1", message.args[0].value)
-      let command = `${config.prefix}${instructions}${config.suffix}`
-      runShell(command)
+      let config_item = config.osc_messages[message.address]
+      let value = message.args[0].value
+      let command = config_item.command
+      command = command.replace("$1", value)
+      command = `${config.prefix}${command}${config.suffix}`
+      if (config_item.trigger_type == "continuous") {
+        runShell(command)
+      }
     }
 });
 
