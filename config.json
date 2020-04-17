@@ -2,9 +2,14 @@
   "prefix": "tmux send '",
   "suffix": "' c-M",
   "osc_messages": {
-    "/test": {
-      "command": "say pulse $1",
+    "/numbers": {
+      "command": "say numbers $1",
       "trigger_type": "continuous"
+    },
+    "/pulse": {
+      "command": "say pulse",
+      "trigger_type": "threshold",
+      "threshold": 0.35
     }
   }
 }

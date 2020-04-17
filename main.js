@@ -32,16 +32,38 @@ function runShell (command) {
 });
 }
 
+let past_thresholds = {}
+
 // Listen for incoming OSC messages and execute commands based on config
 udpPort.on("message", function (message, timeTag, info) {
-    if (message.address in config.osc_messages) {
-      let config_item = config.osc_messages[message.address]
+    let address = message.address
+    if (address in config.osc_messages) {
+      let config_item = config.osc_messages[address]
       let value = message.args[0].value
+      let trigger_type = config_item.trigger_type
+      let threshold = config_item.threshold
       let command = config_item.command
       command = command.replace("$1", value)
       command = `${config.prefix}${command}${config.suffix}`
-      if (config_item.trigger_type == "continuous") {
+      if (trigger_type == "continuous") {
         runShell(command)
+      } else if (trigger_type == "threshold") {
+        // Only run once each time threshold is exceeded
+        // console.log(JSON.stringify(past_thresholds))
+        console.log((value >= threshold), value)
+        if (value >= threshold) {
+          if (!(address in past_thresholds)) {
+            past_thresholds[address] = false
+          }
+          if (!past_thresholds[address]) {
+            if (value >= threshold) {
+              past_thresholds[address] = true
+              runShell(command)
+            }
+          } else {
+            past_thresholds[address] = false
+          }
+        }
       }
     }
 });
