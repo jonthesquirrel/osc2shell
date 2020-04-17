@@ -7,7 +7,8 @@
       "trigger_type": "continuous"
     },
     "/pulse": {
-      "command": "say pulse",
+      "command_rising": "say rising",
+      "command_falling": "say falling",
       "trigger_type": "threshold",
       "threshold": 0.35
     }

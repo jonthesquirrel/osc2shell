@@ -32,7 +32,7 @@ function runShell (command) {
 });
 }
 
-let past_thresholds = {}
+let last_threshold = {}
 
 // Listen for incoming OSC messages and execute commands based on config
 udpPort.on("message", function (message, timeTag, info) {
@@ -42,27 +42,32 @@ udpPort.on("message", function (message, timeTag, info) {
       let value = message.args[0].value
       let trigger_type = config_item.trigger_type
       let threshold = config_item.threshold
-      let command = config_item.command
-      command = command.replace("$1", value)
-      command = `${config.prefix}${command}${config.suffix}`
       if (trigger_type == "continuous") {
+        let command = config_item.command
+        command = command.replace("$1", value)
+        command = `${config.prefix}${command}${config.suffix}`
         runShell(command)
       } else if (trigger_type == "threshold") {
         // Only run once each time threshold is exceeded
-        // console.log(JSON.stringify(past_thresholds))
+        let command_rising = config_item.command_rising
+        let command_falling = config_item.command_falling
         console.log((value >= threshold), value)
-        if (value >= threshold) {
-          if (!(address in past_thresholds)) {
-            past_thresholds[address] = false
-          }
-          if (!past_thresholds[address]) {
-            if (value >= threshold) {
-              past_thresholds[address] = true
-              runShell(command)
-            }
-          } else {
-            past_thresholds[address] = false
-          }
+        // console.log(JSON.stringify(last_threshold))
+        if (!(address in last_threshold)) {
+          last_threshold[address] = "below"
+        }
+        if (value >= threshold && last_threshold[address] == "below") {
+          // Rising edge
+          last_threshold[address] = "above"
+          let command = command_rising.replace("$1", value)
+          command = `${config.prefix}${command}${config.suffix}`
+          runShell(command)
+        } else if (value < threshold && last_threshold[address] == "above") {
+          // Falling edge
+          last_threshold[address] = "below"
+          let command = command_falling.replace("$1", value)
+          command = `${config.prefix}${command}${config.suffix}`
+          runShell(command)
         }
       }
     }
