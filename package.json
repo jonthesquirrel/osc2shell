@@ -1,0 +1,19 @@
+{
+  "name": "osc2shell",
+  "version": "0.1.0",
+  "description": "Translate OSC messages into Shell commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonthesquirrel/osc2shell.git"
+  },
+  "author": "Jonathan Herman (jonthesquirrel)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonthesquirrel/osc2shell/issues"
+  },
+  "homepage": "https://github.com/jonthesquirrel/osc2shell#readme"
+}
