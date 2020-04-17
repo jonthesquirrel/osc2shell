@@ -17,9 +17,13 @@ var udpPort = new osc.UDPPort({
 });
 
 // Listen for incoming OSC messages.
-udpPort.on("message", function (oscMsg, timeTag, info) {
-    // console.log("An OSC message just arrived!", oscMsg);
-    // console.log("Remote info is: ", info);
+udpPort.on("message", function (message, timeTag, info) {
+    if (message.address in config.osc_messages) {
+      let instructions = config.osc_messages[message.address]
+      instructions = instructions.replace("$1", message.args[0].value)
+      let command = `${config.prefix}${instructions}${config.suffix}`
+      console.log(command)
+    }
 });
 
 udpPort.on("error", function (error) {

@@ -1,4 +1,7 @@
 {
   "prefix": "tmux send '",
-  "suffix": "' c-M"
+  "suffix": "' c-M",
+  "osc_messages": {
+    "/test": "say test $1!"
+  }
 }
