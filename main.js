@@ -11,8 +11,8 @@ try {
 
 // Create a UDP Port to listen for OSC messages
 let udpPort = new osc.UDPPort({
-  localAddress: "127.0.0.1",
-  localPort: 8000,
+  localAddress: config.ip,
+  localPort: config.port,
   metadata: true
 })
 
