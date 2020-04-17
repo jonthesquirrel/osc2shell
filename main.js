@@ -2,19 +2,11 @@ var fs = require("fs")
 var osc = require("osc")
 
 let config
-const default_config = {
-  "default": "config"
-}
-function initConfig() {
-  var writeStream = fs.createWriteStream("config.json");
-  writeStream.write(JSON.stringify(default_config));
-  writeStream.end();
-}
 try {
   config = require("./config.json")
 } catch (e) {
-  console.log("No valid config found. Creating one now.")
-  initConfig()
+  console.log("No valid config file found. Please validate the JSON formatting or redownload the default config.json from the repository.")
+  console.log(e)
 }
 
 // Create an osc.js UDP Port listening on port 57121.

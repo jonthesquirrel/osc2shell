@@ -1,3 +1,4 @@
 {
-  "default": "config"
+  "prefix": "tmux send '",
+  "suffix": "' c-M"
 }
