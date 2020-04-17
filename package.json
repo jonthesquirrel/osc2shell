@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jonthesquirrel/osc2shell/issues"
   },
-  "homepage": "https://github.com/jonthesquirrel/osc2shell#readme"
+  "homepage": "https://github.com/jonthesquirrel/osc2shell#readme",
+  "dependencies": {
+    "osc": "^2.4.1"
+  }
 }
