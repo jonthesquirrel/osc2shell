@@ -16,13 +16,28 @@ var udpPort = new osc.UDPPort({
     metadata: true
 });
 
+function runShell (command) {
+  const { exec } = require("child_process");
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    // console.log(`stdout: ${stdout}`);
+});
+}
+
 // Listen for incoming OSC messages.
 udpPort.on("message", function (message, timeTag, info) {
     if (message.address in config.osc_messages) {
       let instructions = config.osc_messages[message.address]
       instructions = instructions.replace("$1", message.args[0].value)
       let command = `${config.prefix}${instructions}${config.suffix}`
-      console.log(command)
+      runShell(command)
     }
 });
 
